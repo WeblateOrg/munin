@@ -10,7 +10,7 @@ def fetch_data(server, token):
     req = urllib.request.Request('{}api/metrics/'.format(server))
     req.add_header('Authorization', 'Token {}'.format(token))
     with urllib.request.urlopen(req) as response:
-       content = response.read()
+       content = response.read().decode('utf-8')
     return json.loads(content)
 
 try:
