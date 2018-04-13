@@ -29,7 +29,7 @@ if CMD == 'config':
     print('graph_scale no')
     print('graph_category weblate')
     print()
-    for key in data:
+    for key in sorted(data):
         if key == 'name':
             continue
         print('{0}.label {0}'.format(key))
