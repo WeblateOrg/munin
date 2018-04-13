@@ -18,6 +18,13 @@ try:
 except IndexError:
     CMD = 'fetch'
 
+WARNINGS = {
+    'index_updates': ':5000',
+}
+CRITICALS = {
+    'index_updates': ':10000',
+}
+
 server = os.environ['SERVER']
 key = os.environ['KEY']
 
@@ -33,6 +40,10 @@ if CMD == 'config':
         if key == 'name':
             continue
         print('{0}.label {0}'.format(key))
+        if key in WARNINGS:
+            print('{0}.warning {1}'.format(key, WARNINGS[key]))
+        if key in CRITICALS:
+            print('{0}.critical {1}'.format(key, CRITICALS[key]))
 else:
     for key, value in data.items():
         if key == 'name':
