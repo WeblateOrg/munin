@@ -53,7 +53,7 @@ data = fetch_data(server, key)
 if CMD == 'config':
     for group, items in GROUPS:
         print()
-        print('multigraph {}-{}'.format(NAME.lower(), group.lower()))
+        print('multigraph {}_{}'.format(NAME.lower(), group.lower()))
         print()
         print('graph_title {} {}'.format(data['name'], group))
         print('graph_args --base 1000')
@@ -69,7 +69,7 @@ if CMD == 'config':
 else:
     for group, items in GROUPS:
         print()
-        print('multigraph {}-{}'.format(NAME.lower(), group.lower()))
+        print('multigraph {}_{}'.format(NAME.lower(), group.lower()))
         print()
         for key in items:
             print('{}.value {}'.format(key, data[key]))
