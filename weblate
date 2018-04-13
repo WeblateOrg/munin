@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import sys
+import urllib.request
+
+
+def fetch_data(server, token):
+    req = urllib.request.Request('{}api/metrics/'.format(server))
+    req.add_header('Authorization', 'Token {}'.format(token))
+    with urllib.request.urlopen(req) as response:
+       content = response.read()
+    return json.loads(content)
+
+
+INSTANCE = os.path.basename(sys.argv[0]).replace('weblate', '').upper()
+if not INSTANCE:
+    INSTANCE = ''
+
+try:
+    CMD = sys.argv[1]
+except IndexError:
+    CMD = 'fetch'
+
+server = os.environ['SERVER' + INSTANCE]
+key = os.environ['KEY' + INSTANCE]
+
+data = fetch_data(server, key)
+
+if CMD == 'config':
+    print('graph_title {}'.format(data['name']))
+    print('graph_args --base 1000')
+    print('graph_scale no')
+    print('graph_category weblate')
+    print()
+    for key in data:
+        if key == 'name':
+            continue
+        print('{0}.label {0}'.format(key))
+else:
+    for key, value in data.items():
+        if key == 'name':
+            continue
+        print('{}.value {}'.format(key, value))

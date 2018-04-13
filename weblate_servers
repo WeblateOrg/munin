@@ -1,0 +1,3 @@
+[weblate]
+env.SERVER=https://weblate.example.com/
+env.KEY=APIKEY
