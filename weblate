@@ -13,18 +13,13 @@ def fetch_data(server, token):
        content = response.read()
     return json.loads(content)
 
-
-INSTANCE = os.path.basename(sys.argv[0]).replace('weblate', '').upper()
-if not INSTANCE:
-    INSTANCE = ''
-
 try:
     CMD = sys.argv[1]
 except IndexError:
     CMD = 'fetch'
 
-server = os.environ['SERVER' + INSTANCE]
-key = os.environ['KEY' + INSTANCE]
+server = os.environ['SERVER']
+key = os.environ['KEY']
 
 data = fetch_data(server, key)
 
