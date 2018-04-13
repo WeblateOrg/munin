@@ -35,7 +35,7 @@ GROUPS = (
     ),
     (
         'Index',
-        ('index_updates')
+        ('index_updates',)
     ),
     (
         'Users',
