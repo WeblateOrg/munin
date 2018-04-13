@@ -24,6 +24,24 @@ WARNINGS = {
 CRITICALS = {
     'index_updates': ':10000',
 }
+GROUPS = (
+    (
+        'Units',
+        ('units', 'checks')
+    ),
+    (
+        'Projects',
+        ('projects', 'components', 'translations', 'languages')
+    ),
+    (
+        'Index',
+        ('index_updates')
+    ),
+    (
+        'Users',
+        ('users',)
+    )
+)
 
 server = os.environ['SERVER']
 key = os.environ['KEY']
@@ -31,21 +49,21 @@ key = os.environ['KEY']
 data = fetch_data(server, key)
 
 if CMD == 'config':
-    print('graph_title {}'.format(data['name']))
-    print('graph_args --base 1000')
-    print('graph_scale no')
-    print('graph_category weblate')
-    print()
-    for key in sorted(data):
-        if key == 'name':
-            continue
-        print('{0}.label {0}'.format(key))
-        if key in WARNINGS:
-            print('{0}.warning {1}'.format(key, WARNINGS[key]))
-        if key in CRITICALS:
-            print('{0}.critical {1}'.format(key, CRITICALS[key]))
+    for group, items in GROUPS:
+        print('multigraph {}'.format(group))
+        print('graph_title {} {}'.format(data['name'], group))
+        print('graph_args --base 1000')
+        print('graph_scale no')
+        print('graph_category weblate')
+        print()
+        for key in items:
+            print('{0}.label {0}'.format(key))
+            if key in WARNINGS:
+                print('{0}.warning {1}'.format(key, WARNINGS[key]))
+            if key in CRITICALS:
+                print('{0}.critical {1}'.format(key, CRITICALS[key]))
 else:
-    for key, value in data.items():
-        if key == 'name':
-            continue
-        print('{}.value {}'.format(key, value))
+    for group, items in GROUPS:
+        print('multigraph {}'.format(group))
+        for key in items:
+            print('{}.value {}'.format(key, data[key]))
