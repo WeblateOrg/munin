@@ -33,7 +33,11 @@ GROUPS = (
     ),
     (
         'Projects',
-        ('projects', 'components', 'translations', 'languages')
+        ('projects', 'components', 'languages')
+    ),
+    (
+        'Translations',
+        ('translations',)
     ),
     (
         'Index',
