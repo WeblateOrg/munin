@@ -29,7 +29,7 @@ CRITICALS = {
 GROUPS = (
     (
         'Units',
-        ('units', 'units_translated', 'checks')
+        ('units', 'units_translated', 'checks', 'suggestions')
     ),
     (
         'Projects',
@@ -40,8 +40,8 @@ GROUPS = (
         ('translations',)
     ),
     (
-        'Index',
-        ('index_updates',)
+        'Changes',
+        ('index_updates', 'changes')
     ),
     (
         'Users',
