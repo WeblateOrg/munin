@@ -20,11 +20,14 @@ try:
 except IndexError:
     CMD = 'fetch'
 
-WARNINGS = {
-    'index_updates': ':5000',
-}
-CRITICALS = {
-    'index_updates': ':10000',
+ATTRIBS = {
+    'index_updates': {
+        'warning': ':5000',
+        'critical': ':10000',
+    },
+    'changes': {
+        'type': 'DERIVE',
+    },
 }
 GROUPS = (
     (
@@ -66,10 +69,9 @@ if CMD == 'config':
         print()
         for key in items:
             print('{0}.label {0}'.format(key))
-            if key in WARNINGS:
-                print('{0}.warning {1}'.format(key, WARNINGS[key]))
-            if key in CRITICALS:
-                print('{0}.critical {1}'.format(key, CRITICALS[key]))
+            if key in ATTRIBS:
+                for attrib, value in ATTRIBS[key].items():
+                    print('{0}.{1} {2}'.format(key, attrib, value))
 else:
     for group, items in GROUPS:
         print()
