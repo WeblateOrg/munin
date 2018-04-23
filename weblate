@@ -22,8 +22,8 @@ except IndexError:
 
 ATTRIBS = {
     'index_updates': {
-        'warning': ':5000',
-        'critical': ':10000',
+        'warning': ':10000',
+        'critical': ':20000',
     },
     'changes': {
         'type': 'DERIVE',
