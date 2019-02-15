@@ -25,6 +25,14 @@ ATTRIBS = {
         'warning': ':10000',
         'critical': ':20000',
     },
+    'celery_queue': {
+        'warning': ':10',
+        'critical': ':100',
+    },
+    'celery_memory_queue': {
+        'warning': ':10000',
+        'critical': ':20000',
+    },
     'changes': {
         'type': 'DERIVE',
     },
@@ -44,12 +52,16 @@ GROUPS = (
     ),
     (
         'Changes',
-        ('index_updates', 'changes')
+        ('changes',)
     ),
     (
         'Users',
         ('users',)
-    )
+    ),
+    (
+        'Celery',
+        ('index_updates', 'celery_queue', 'celery_memory_queue'),
+    ),
 )
 
 server = os.environ['SERVER']
