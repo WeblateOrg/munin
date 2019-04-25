@@ -29,6 +29,10 @@ ATTRIBS = {
         'warning': ':10',
         'critical': ':100',
     },
+    'notification_queue': {
+        'warning': ':1000',
+        'critical': ':10000',
+    },
     'celery_memory_queue': {
         'warning': ':10000',
         'critical': ':20000',
@@ -60,7 +64,7 @@ GROUPS = (
     ),
     (
         'Celery',
-        ('index_updates', 'celery_queue', 'celery_memory_queue'),
+        ('index_updates', 'celery_queue', 'celery_memory_queue', 'notification_queue'),
     ),
 )
 
@@ -90,4 +94,5 @@ else:
         print('multigraph {}_{}'.format(NAME.lower(), group.lower()))
         print()
         for key in items:
-            print('{}.value {}'.format(key, data[key]))
+            if key in data:
+                print('{}.value {}'.format(key, data[key]))
