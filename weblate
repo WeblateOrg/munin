@@ -7,92 +7,64 @@ import urllib.request
 
 
 def fetch_data(server, token):
-    req = urllib.request.Request('{}api/metrics/'.format(server))
-    req.add_header('Authorization', 'Token {}'.format(token))
+    req = urllib.request.Request("{}api/metrics/".format(server))
+    req.add_header("Authorization", "Token {}".format(token))
     with urllib.request.urlopen(req) as response:
-       content = response.read().decode('utf-8')
+        content = response.read().decode("utf-8")
     return json.loads(content)
+
 
 NAME = os.path.basename(sys.argv[0])
 
 try:
     CMD = sys.argv[1]
 except IndexError:
-    CMD = 'fetch'
+    CMD = "fetch"
 
 ATTRIBS = {
-    'index_updates': {
-        'warning': ':10000',
-        'critical': ':20000',
-    },
-    'celery_queue': {
-        'warning': ':10',
-        'critical': ':100',
-    },
-    'notification_queue': {
-        'warning': ':1000',
-        'critical': ':10000',
-    },
-    'celery_memory_queue': {
-        'warning': ':10000',
-        'critical': ':20000',
-    },
-    'changes': {
-        'type': 'DERIVE',
-    },
+    "index_updates": {"warning": ":10000", "critical": ":20000"},
+    "celery_queue": {"warning": ":10", "critical": ":100"},
+    "notification_queue": {"warning": ":1000", "critical": ":10000"},
+    "celery_memory_queue": {"warning": ":10000", "critical": ":20000"},
+    "changes": {"type": "DERIVE"},
 }
 GROUPS = (
+    ("Units", ("units", "units_translated", "checks", "suggestions")),
+    ("Projects", ("projects", "components", "languages")),
+    ("Translations", ("translations",)),
+    ("Changes", ("changes",)),
+    ("Users", ("users",)),
     (
-        'Units',
-        ('units', 'units_translated', 'checks', 'suggestions')
-    ),
-    (
-        'Projects',
-        ('projects', 'components', 'languages')
-    ),
-    (
-        'Translations',
-        ('translations',)
-    ),
-    (
-        'Changes',
-        ('changes',)
-    ),
-    (
-        'Users',
-        ('users',)
-    ),
-    (
-        'Celery',
-        ('index_updates', 'celery_queue', 'celery_memory_queue', 'notification_queue'),
+        "Celery",
+        ("index_updates", "celery_queue", "celery_memory_queue", "notification_queue"),
     ),
 )
 
-server = os.environ['SERVER']
-key = os.environ['KEY']
+server = os.environ["SERVER"]
+key = os.environ["KEY"]
 
 data = fetch_data(server, key)
 
-if CMD == 'config':
+if CMD == "config":
     for group, items in GROUPS:
         print()
-        print('multigraph {}_{}'.format(NAME.lower(), group.lower()))
+        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
-        print('graph_title {} {}'.format(data['name'], group))
-        print('graph_args --base 1000')
-        print('graph_scale no')
-        print('graph_category weblate')
+        print("graph_title {} {}".format(data["name"], group))
+        print("graph_args --base 1000")
+        print("graph_scale no")
+        print("graph_category weblate")
         print()
         for key in items:
-            print('{0}.label {0}'.format(key))
+            print("{0}.label {0}".format(key))
             if key in ATTRIBS:
                 for attrib, value in ATTRIBS[key].items():
-                    print('{0}.{1} {2}'.format(key, attrib, value))
+                    print("{0}.{1} {2}".format(key, attrib, value))
 else:
     for group, items in GROUPS:
         print()
-        print('multigraph {}_{}'.format(NAME.lower(), group.lower()))
+        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
         for key in items:
             if key in data:
-                print('{}.value {}'.format(key, data[key]))
+                print("{}.value {}".format(key, data[key]))
