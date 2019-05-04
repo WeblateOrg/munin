@@ -24,7 +24,7 @@ except IndexError:
 ATTRIBS = {
     "index_updates": {"warning": ":10000", "critical": ":20000"},
     "celery_queue": {"warning": ":10", "critical": ":100"},
-    "notification_queue": {"warning": ":1000", "critical": ":10000"},
+    "celery_notification_queue": {"warning": ":1000", "critical": ":10000"},
     "celery_memory_queue": {"warning": ":10000", "critical": ":20000"},
     "changes": {"type": "DERIVE"},
 }
@@ -36,7 +36,12 @@ GROUPS = (
     ("Users", ("users",)),
     (
         "Celery",
-        ("index_updates", "celery_queue", "celery_memory_queue", "notification_queue"),
+        (
+            "index_updates",
+            "celery_queue",
+            "celery_memory_queue",
+            "celery_notification_queue",
+        ),
     ),
 )
 
