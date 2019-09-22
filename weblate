@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 #%# family=auto
+#%# capabilities=autoconf
 
 import json
 import os
