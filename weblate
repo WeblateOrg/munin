@@ -24,10 +24,11 @@ except IndexError:
     CMD = "fetch"
 
 ATTRIBS = {
-    "index_updates": {"warning": ":10000", "critical": ":20000"},
-    "celery_queue": {"warning": ":10", "critical": ":100"},
-    "celery_notification_queue": {"warning": ":1000", "critical": ":10000"},
-    "celery_memory_queue": {"warning": ":10000", "critical": ":20000"},
+    "celery_search": {"warning": ":10000", "critical": ":20000"},
+    "celery_backup": {"warning": ":10", "critical": ":100"},
+    "celery_celery": {"warning": ":200", "critical": ":1000"},
+    "celery_notify": {"warning": ":1000", "critical": ":2000"},
+    "celery_memory": {"warning": ":10000", "critical": ":20000"},
     "changes": {"type": "DERIVE"},
 }
 GROUPS = (
@@ -36,15 +37,7 @@ GROUPS = (
     ("Translations", ("translations",)),
     ("Changes", ("changes",)),
     ("Users", ("users",)),
-    (
-        "Celery",
-        (
-            "index_updates",
-            "celery_queue",
-            "celery_memory_queue",
-            "celery_notification_queue",
-        ),
-    ),
+    ("Celery", 'CELERY'),
 )
 
 server = os.environ["SERVER"]
@@ -62,6 +55,8 @@ if CMD == "config":
         print("graph_scale no")
         print("graph_category weblate")
         print()
+        if items == 'CELERY':
+            items = ['celery_{}'.format(queue) for queue in data['celery_queues']]
         for key in items:
             print("{0}.label {0}".format(key))
             if key in ATTRIBS:
@@ -74,6 +69,11 @@ else:
         print()
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
+        if items == 'CELERY':
+            itemdata = data['celery_queues']
+            items = data['celery_queues'].keys()
+        else:
+            itemdata = data
         for key in items:
-            if key in data:
-                print("{}.value {}".format(key, data[key]))
+            if key in itemdata:
+                print("{}.value {}".format(key, itemdata[key]))
