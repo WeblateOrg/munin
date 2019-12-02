@@ -39,7 +39,7 @@ GROUPS = (
     ("Changes", ("changes",)),
     ("Errors", ("configuration_errors",)),
     ("Users", ("users",)),
-    ("Celery", 'CELERY'),
+    ("Celery", "CELERY"),
 )
 
 server = os.environ["SERVER"]
@@ -57,8 +57,8 @@ if CMD == "config":
         print("graph_scale no")
         print("graph_category weblate")
         print()
-        if items == 'CELERY':
-            items = ['celery_{}'.format(queue) for queue in data['celery_queues']]
+        if items == "CELERY":
+            items = ["celery_{}".format(queue) for queue in data["celery_queues"]]
         for key in items:
             print("{0}.label {0}".format(key))
             if key in ATTRIBS:
@@ -71,9 +71,9 @@ else:
         print()
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
-        if items == 'CELERY':
-            itemdata = data['celery_queues']
-            items = data['celery_queues'].keys()
+        if items == "CELERY":
+            itemdata = data["celery_queues"]
+            items = data["celery_queues"].keys()
         else:
             itemdata = data
         for key in items:
