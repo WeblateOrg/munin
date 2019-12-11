@@ -29,6 +29,7 @@ ATTRIBS = {
     "celery_celery": {"warning": ":200", "critical": ":1000"},
     "celery_notify": {"warning": ":1000", "critical": ":2000"},
     "celery_memory": {"warning": ":10000", "critical": ":20000"},
+    "celery_translate": {"warning": ":200", "critical": ":1000"},
     "configuration_errors": {"critical": ":1"},
     "changes": {"type": "DERIVE"},
 }
