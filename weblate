@@ -71,11 +71,13 @@ else:
         print()
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
+        prefix = ""
         if items == "CELERY":
             itemdata = data["celery_queues"]
             items = data["celery_queues"].keys()
+            prefix = "celery_"
         else:
             itemdata = data
         for key in items:
             if key in itemdata:
-                print("{}.value {}".format(key, itemdata[key]))
+                print("{}{}.value {}".format(prefix, key, itemdata[key]))
