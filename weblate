@@ -75,7 +75,7 @@ else:
         prefix = ""
         if items == "CELERY":
             itemdata = data["celery_queues"]
-            items = data["celery_queues"].keys()
+            items = sorted(data["celery_queues"].keys())
             prefix = "celery_"
         else:
             itemdata = data
