@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+#%# family=auto
+#%# capabilities=autoconf
+
+import json
+import os
+import sys
+import urllib.request
+
+
+def fetch_data(server):
+    req = urllib.request.Request("{}stats".format(server))
+    with urllib.request.urlopen(req) as response:
+        content = response.read().decode()
+    return json.loads(content)
+
+
+NAME = os.path.basename(sys.argv[0])
+
+try:
+    CMD = sys.argv[1]
+except IndexError:
+    CMD = "fetch"
+
+ATTRIBS = {
+    "celery_search": {"warning": ":10000", "critical": ":20000"},
+    "celery_backup": {"warning": ":10", "critical": ":100"},
+    "celery_celery": {"warning": ":200", "critical": ":1000"},
+    "celery_notify": {"warning": ":1000", "critical": ":2000"},
+    "celery_memory": {"warning": ":10000", "critical": ":20000"},
+    "celery_translate": {"warning": ":200", "critical": ":1000"},
+    "configuration_errors": {"critical": ":0"},
+    "changes": {"type": "DERIVE"},
+}
+
+
+def use_count(data):
+    for key in sorted(data["responseData"]["useCount"]):
+        yield key, {"type": "DERIVE"}
+
+
+def use_count_data(data):
+    yield from sorted(data["responseData"]["useCount"].items())
+
+
+def period_stats_key(key):
+    def stats_key(data):
+        yield key, {}
+
+    return stats_key
+
+
+def period_stats_data(key):
+    def stats_data(data):
+        yield key, data["responseData"]["periodStats"][key]
+
+    return stats_data
+
+
+GROUPS = (
+    ("Usage", use_count, use_count_data),
+    ("Chars", period_stats_key("totChars"), period_stats_data("totChars")),
+    ("Requests", period_stats_key("requests"), period_stats_data("requests")),
+    (
+        "Chars per second",
+        period_stats_key("charsPerSec"),
+        period_stats_data("charsPerSec"),
+    ),
+)
+
+server = os.environ.get("SERVER", "http://localhost:2737/")
+
+data = fetch_data(server)
+
+if CMD == "config":
+    for group, group_keys, _group_data in GROUPS:
+        print()
+        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
+        print()
+        print("graph_title {}".format(group))
+        print("graph_args --base 1000")
+        print("graph_scale no")
+        print("graph_category apertium")
+        print()
+        for key, attribs in group_keys(data):
+            print("{0}.label {0}".format(key))
+            for attrib, value in attribs.items():
+                print("{0}.{1} {2}".format(key, attrib, value))
+elif CMD == "autoconf":
+    print("yes")
+else:
+    for group, _group_keys, group_data in GROUPS:
+        print()
+        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
+        print()
+        for key, value in group_data(data):
+            print("{}.value {}".format(key, value))
