@@ -91,7 +91,7 @@ elif CMD == "autoconf":
 else:
     for group, _group_keys, group_data in GROUPS:
         print()
-        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
+        print("multigraph {}_{}".format(NAME.lower(), group.lower().replace(" ", "_")))
         print()
         for key, value in group_data(data):
             print("{}.value {}".format(key, value))
