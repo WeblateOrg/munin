@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+#%# family=auto
+#%# capabilities=autoconf
+
+import os
+import sys
+
+KSM_DIR = "/sys/kernel/mm/ksm/"
+KEYS = ("shared", "sharing", "unshared", "volatile")
+
+if "autoconf" in sys.argv:
+    if os.path.exists(KSM_DIR):
+        print("yes")
+    else:
+        print("no (%s not found)" % KSM_DIR)
+elif "config" in sys.argv:
+    print("graph_title Kernel shared memory")
+    print("graph_category system")
+    print("graph_info kernel shared memory")
+    for key in KEYS:
+        print("{0}.label {0}".format(key))
+else:
+    os.chdir(KSM_DIR)
+    for key in KEYS:
+        with open("pages_{}".format(key)) as handle:
+            print("{}.value {}".format(key, handle.read().strip()))
