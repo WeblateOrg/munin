@@ -33,7 +33,7 @@ ATTRIBS = {
     "celery_translate": {"warning": ":200", "critical": ":1000"},
     "configuration_errors": {"critical": ":0"},
     "changes": {"type": "DERIVE"},
-    "response": {"warning": ":1", "critical": ":10"},
+    "response": {"warning": ":2", "critical": ":10"},
 }
 GROUPS = (
     ("Units", ("units", "units_translated", "checks", "suggestions")),
