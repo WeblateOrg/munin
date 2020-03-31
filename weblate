@@ -5,6 +5,7 @@
 import json
 import os
 import sys
+import time
 import urllib.request
 
 
@@ -41,12 +42,15 @@ GROUPS = (
     ("Errors", ("configuration_errors",)),
     ("Users", ("users",)),
     ("Celery", "CELERY"),
+    ("Response", ("response",)),
 )
 
 server = os.environ["SERVER"]
 key = os.environ["KEY"]
 
+start = time.time()
 data = fetch_data(server, key)
+response_time = time.time() - start
 
 if CMD == "config":
     for group, items in GROUPS:
@@ -73,6 +77,9 @@ else:
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
         prefix = ""
+        if items == ("response",):
+            print("response.value {}".format(response_time))
+            continue
         if items == "CELERY":
             itemdata = data["celery_queues"]
             items = sorted(data["celery_queues"].keys())
