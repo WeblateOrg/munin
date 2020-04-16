@@ -58,7 +58,11 @@ if CMD == "config":
         print()
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
-        print("graph_title {} {}".format(data["name"], group))
+        if NAME == "weblate":
+            title = group
+        else:
+            title = "{} {}".format(data["name"], group)
+        print(f"graph_title {title}")
         print("graph_args --base 1000")
         print("graph_scale no")
         print("graph_category weblate")
