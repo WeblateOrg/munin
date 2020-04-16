@@ -59,7 +59,7 @@ if CMD == "config":
         print("multigraph {}_{}".format(NAME.lower(), group.lower()))
         print()
         if NAME == "weblate":
-            title = group
+            title = "Weblate {}".format(group)
         else:
             title = "{} {}".format(data["name"], group)
         print(f"graph_title {title}")
