@@ -68,7 +68,9 @@ if CMD == "config":
         print("graph_category weblate")
         print()
         if items == "CELERY":
-            items = ["celery_{}".format(queue) for queue in data["celery_queues"]]
+            items = [
+                "celery_{}".format(queue) for queue in sorted(data["celery_queues"])
+            ]
         for key in items:
             print("{0}.label {0}".format(key))
             if key in ATTRIBS:
@@ -87,7 +89,7 @@ else:
             continue
         if items == "CELERY":
             itemdata = data["celery_queues"]
-            items = sorted(data["celery_queues"].keys())
+            items = sorted(data["celery_queues"])
             prefix = "celery_"
         else:
             itemdata = data
