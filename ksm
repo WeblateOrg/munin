@@ -23,5 +23,5 @@ elif "config" in sys.argv:
 else:
     os.chdir(KSM_DIR)
     for key in KEYS:
-        with open("pages_{}".format(key)) as handle:
-            print("{}.value {}".format(key, handle.read().strip()))
+        with open(f"pages_{key}") as handle:
+            print(f"{key}.value {handle.read().strip()}")

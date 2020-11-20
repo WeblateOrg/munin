@@ -10,8 +10,8 @@ import urllib.request
 
 
 def fetch_data(server, token):
-    req = urllib.request.Request("{}api/metrics/".format(server))
-    req.add_header("Authorization", "Token {}".format(token))
+    req = urllib.request.Request(f"{server}api/metrics/")
+    req.add_header("Authorization", f"Token {token}")
     with urllib.request.urlopen(req) as response:
         content = response.read().decode("utf-8")
     return json.loads(content)
@@ -56,10 +56,10 @@ response_time = time.time() - start
 if CMD == "config":
     for group, items in GROUPS:
         print()
-        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
+        print(f"multigraph {NAME.lower()}_{group.lower()}")
         print()
         if NAME == "weblate":
-            title = "Weblate {}".format(group)
+            title = f"Weblate {group}"
         else:
             title = "{} {}".format(data["name"], group)
         print(f"graph_title {title}")
@@ -68,24 +68,22 @@ if CMD == "config":
         print("graph_category weblate")
         print()
         if items == "CELERY":
-            items = [
-                "celery_{}".format(queue) for queue in sorted(data["celery_queues"])
-            ]
+            items = [f"celery_{queue}" for queue in sorted(data["celery_queues"])]
         for key in items:
             print("{0}.label {0}".format(key))
             if key in ATTRIBS:
                 for attrib, value in ATTRIBS[key].items():
-                    print("{0}.{1} {2}".format(key, attrib, value))
+                    print(f"{key}.{attrib} {value}")
 elif CMD == "autoconf":
     print("yes")
 else:
     for group, items in GROUPS:
         print()
-        print("multigraph {}_{}".format(NAME.lower(), group.lower()))
+        print(f"multigraph {NAME.lower()}_{group.lower()}")
         print()
         prefix = ""
         if items == ("response",):
-            print("response.value {}".format(response_time))
+            print(f"response.value {response_time}")
             continue
         if items == "CELERY":
             itemdata = data["celery_queues"]
