@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+#%# family=auto
+#%# capabilities=autoconf
+
+import json
+import os
+import sys
+from urllib.request import urlopen
+
+try:
+    CMD = sys.argv[1]
+except IndexError:
+    CMD = "fetch"
+
+with urlopen(os.environ["monitor_url"]) as handle:
+    payload = json.loads(handle.read())
+
+if CMD == "config":
+    print()
+    print("graph_title Zammad issues")
+    print("graph_args --base 1000")
+    print("graph_scale no")
+    print("graph_category zammad")
+    print()
+    print("issues.label Issues")
+    print("issues.critical 0:0")
+elif CMD == "autoconf":
+    print("yes")
+else:
+    print("issues.value {}".format(len(payload["issues"])))
