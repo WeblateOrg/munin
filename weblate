@@ -93,4 +93,4 @@ else:
             itemdata = data
         for key in items:
             if key in itemdata:
-                print("{}{}.value {}".format(prefix, key, itemdata[key]))
+                print(f"{prefix}{key}.value {itemdata[key]}")
