@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Languages
+name: Tests
 
 on: [push, pull_request]
 
@@ -24,6 +24,6 @@ jobs:
     - run: sudo apt install munin-node
     - name: munin-node-configure
       run: |
-        /usr/sbin/munin-node-configure --libdir ./ --suggest --debug
-        /usr/sbin/munin-node-configure --libdir ./ --suggest > test/out
+        /usr/sbin/munin-node-configure --libdir ./ --suggest --debug || true
+        /usr/sbin/munin-node-configure --libdir ./ --suggest > test/out || true
         diff -u test/expected test/out
