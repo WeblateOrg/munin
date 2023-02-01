@@ -24,6 +24,7 @@ jobs:
     - run: sudo apt install munin-node
     - name: munin-node-configure
       run: |
-        /usr/sbin/munin-node-configure --servicedir out --sconfdir out --libdir . --suggest --debug || true
-        /usr/sbin/munin-node-configure --servicedir out --sconfdir out --libdir . --suggest > test/out || true
+        BLANKDIR=$(mktemp d)
+        /usr/sbin/munin-node-configure --servicedir "$(BLANDIR)" --sconfdir "$(BLANDIR)" --libdir . --suggest --debug || true
+        /usr/sbin/munin-node-configure --servicedir "$(BLANDIR)" --sconfdir "$(BLANDIR)" --libdir . --suggest > test/out || true
         diff -u test/expected test/out
