@@ -1,0 +1,29 @@
+# Copyright © Michal Čihař <michal@weblate.org>
+#
+# SPDX-License-Identifier: MIT
+
+name: Languages
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version:
+        - '3.9'
+        - '3.10'
+        - '3.11'
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - run: sudo apt update
+    - run: sudo apt install munin-node
+    - name: munin-node-configure
+      run: |
+        /usr/sbin/munin-node-configure --libdir ./ --suggest --debug
+        /usr/sbin/munin-node-configure --libdir ./ --suggest > test/out
+        diff -u test/expected test/out

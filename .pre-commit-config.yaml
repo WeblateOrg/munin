@@ -70,3 +70,4 @@ repos:
     - mdformat-gfm
     - mdformat-black
     - mdformat-shfmt
+exclude: ^test/expected$
