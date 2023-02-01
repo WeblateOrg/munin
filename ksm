@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-# %# family=auto
-# %# capabilities=autoconf
+#%# family=auto
+#%# capabilities=autoconf
 
 import os
 import sys
