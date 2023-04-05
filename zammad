@@ -13,7 +13,7 @@ try:
 except IndexError:
     CMD = "fetch"
 
-with urlopen(os.environ["monitor_url"]) as handle:
+with urlopen(os.environ["MONITOR_URL"]) as handle:
     payload = json.loads(handle.read())
 
 if CMD == "config":
