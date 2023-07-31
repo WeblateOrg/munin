@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 # fmt: off
-# %# family=auto
-# %# capabilities=autoconf
+#%# family=auto
+#%# capabilities=autoconf
 # fmt: on
 
 import os
