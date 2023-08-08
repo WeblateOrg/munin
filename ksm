@@ -21,7 +21,7 @@ elif "config" in sys.argv:
     print("graph_category system")
     print("graph_info kernel shared memory")
     for key in KEYS:
-        print("{0}.label {0}".format(key))
+        print(f"{key}.label {key}")
 else:
     os.chdir(KSM_DIR)
     for key in KEYS:
