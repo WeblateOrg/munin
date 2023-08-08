@@ -73,7 +73,7 @@ if CMD == "config":
         if items == "CELERY":
             items = [f"celery_{queue}" for queue in sorted(data["celery_queues"])]
         for key in items:
-            print("{0}.label {0}".format(key))
+            print(f"{key}.label {key}")
             if key in ATTRIBS:
                 for attrib, value in ATTRIBS[key].items():
                     print(f"{key}.{attrib} {value}")

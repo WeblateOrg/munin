@@ -86,7 +86,7 @@ if CMD == "config":
         print("graph_category apertium")
         print()
         for key, attribs in group_keys(data):
-            print("{0}.label {0}".format(key))
+            print(f"{key}.label {key}")
             for attrib, value in attribs.items():
                 print(f"{key}.{attrib} {value}")
 elif CMD == "autoconf":
