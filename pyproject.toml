@@ -5,7 +5,6 @@ target-version = ['py39']
 profile = "black"
 
 [tool.ruff]
-format = "github"
 ignore = [
   "D10",  # TODO: we are missing many docstrings
   "D203",  # CONFIG: incompatible with D211
@@ -13,6 +12,7 @@ ignore = [
   "T201",  # WONTFIX: using print() (maybe add noqa)
   "PLW2901"  # TODO: overwriting variables inside loop
 ]
+output-format = "github"
 select = [
   "E",
   "F",
