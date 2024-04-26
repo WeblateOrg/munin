@@ -15,7 +15,7 @@ if "autoconf" in sys.argv:
     if os.path.exists(KSM_DIR):
         print("yes")
     else:
-        print("no (%s not found)" % KSM_DIR)
+        print(f"no ({KSM_DIR} not found)")
 elif "config" in sys.argv:
     print("graph_title Kernel shared memory")
     print("graph_category system")
