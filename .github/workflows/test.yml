@@ -29,3 +29,5 @@ jobs:
         /usr/sbin/munin-node-configure --servicedir "$BLANKDIR" --sconfdir "$BLANKDIR" --libdir . --suggest --debug || true
         /usr/sbin/munin-node-configure --servicedir "$BLANKDIR" --sconfdir "$BLANKDIR" --libdir . --suggest > test/out || true
         diff -u test/expected test/out
+permissions:
+  contents: read
