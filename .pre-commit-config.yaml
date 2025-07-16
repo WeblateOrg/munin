@@ -61,3 +61,5 @@ repos:
 exclude: ^test/expected$
 ci:
   autoupdate_schedule: quarterly
+  skip:
+  - gitleaks-docker
