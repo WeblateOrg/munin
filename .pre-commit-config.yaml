@@ -58,4 +58,5 @@ repos:
 exclude: ^test/expected$
 ci:
   autoupdate_schedule: quarterly
-  skip: []
+  skip:
+  - kingfisher-auto
