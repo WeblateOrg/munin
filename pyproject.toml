@@ -1,11 +1,39 @@
-[tool.black]
-target-version = ['py39']
+[dependency-groups]
+dev = [
+  {include-group = "lint"}
+]
+lint = [
+  {include-group = "pre-commit"}
+]
+pre-commit = [
+  "prek==0.4.11"
+]
 
-[tool.isort]
-profile = "black"
-
-[tool.ruff]
-target-version = "py39"
+[project]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Internationalization",
+  "Topic :: Software Development :: Localization",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
+]
+description = "Weblate munin plugin"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+name = "weblate-munin"
+requires-python = ">=3.11"
+version = "2026.6"
 
 [tool.ruff.format]
 docstring-code-format = true
