@@ -5,19 +5,58 @@
 #%# capabilities=autoconf
 # fmt: on
 
+from __future__ import annotations
+
 import json
 import os
 import sys
 import time
 import urllib.request
+from subprocess import CalledProcessError, run
 
 
-def fetch_data(server, token):
+def get_docker_container() -> str | None:
+    # Check if Docker is available
+    try:
+        run(["docker", "ps"], check=True, capture_output=True)
+    except CalledProcessError:
+        return None
+    # Get Weblate container ID
+    result = run(
+        ["docker", "ps", "--filter", "name=weblate-weblate", "--format", "{{.ID}}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def fetch_data_docker(container_id: str) -> str:
+    result = run(
+        ["docker", "exec", container_id, "weblate", "monitor", "--format=json"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout
+
+
+def fetch_data_remote() -> str:
+    server = os.environ["SERVER"]
+    token = os.environ["KEY"]
+
     req = urllib.request.Request(f"{server}api/metrics/")
     req.add_header("Authorization", f"Token {token}")
     with urllib.request.urlopen(req) as response:
-        content = response.read().decode("utf-8")
-    return json.loads(content)
+        return response.read().decode("utf-8")
+
+
+def fetch_data():
+    if container_id := get_docker_container():
+        data = fetch_data_docker(container_id)
+    else:
+        data = fetch_data_remote()
+    return json.loads(data)
 
 
 NAME = os.path.basename(sys.argv[0])
@@ -49,11 +88,8 @@ GROUPS = (
     ("Response", ("response",)),
 )
 
-server = os.environ["SERVER"]
-key = os.environ["KEY"]
-
 start = time.time()
-data = fetch_data(server, key)
+data = fetch_data()
 response_time = time.time() - start
 
 if CMD == "config":
