@@ -19,7 +19,7 @@ def get_docker_container() -> str | None:
     # Check if Docker is available
     try:
         run(["docker", "ps"], check=True, capture_output=True)
-    except CalledProcessError:
+    except (CalledProcessError, FileNotFoundError):
         return None
     # Get Weblate container ID
     result = run(
