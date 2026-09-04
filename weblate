@@ -54,9 +54,12 @@ def fetch_data_remote() -> str:
 def fetch_data():
     if container_id := get_docker_container():
         data = fetch_data_docker(container_id)
+        response_time = None
     else:
+        start = time.time()
         data = fetch_data_remote()
-    return json.loads(data)
+        response_time = time.time() - start
+    return json.loads(data), response_time
 
 
 NAME = os.path.basename(sys.argv[0])
@@ -88,12 +91,11 @@ GROUPS = (
     ("Response", ("response",)),
 )
 
-start = time.time()
-data = fetch_data()
-response_time = time.time() - start
+data, response_time = fetch_data()
+groups = GROUPS if response_time is not None else GROUPS[:-1]
 
 if CMD == "config":
-    for group, items in GROUPS:
+    for group, items in groups:
         print()
         print(f"multigraph {NAME.lower()}_{group.lower()}")
         print()
@@ -116,7 +118,7 @@ if CMD == "config":
 elif CMD == "autoconf":
     print("yes")
 else:
-    for group, items in GROUPS:
+    for group, items in groups:
         print()
         print(f"multigraph {NAME.lower()}_{group.lower()}")
         print()
