@@ -33,7 +33,7 @@ def get_docker_container() -> str | None:
 
 def fetch_data_docker(container_id: str) -> str:
     result = run(
-        ["docker", "exec", container_id, "weblate", "monitor", "--format=json"],
+        ["docker", "exec", container_id, "weblate", "metrics", "--format=json"],
         check=True,
         capture_output=True,
         text=True,
