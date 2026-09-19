@@ -1,9 +1,9 @@
 [dependency-groups]
 dev = [
-  {include-group = "lint"}
+  { include-group = "lint" }
 ]
 lint = [
-  {include-group = "pre-commit"}
+  { include-group = "pre-commit" }
 ]
 pre-commit = [
   "prek==0.5.3"
